@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+import '../../model/weather_model.dart';
 import '../app_exceptions.dart';
 import 'baseApiServices.dart';
 class NetworkApiServices extends BaseApiServices {
@@ -24,80 +25,37 @@ class NetworkApiServices extends BaseApiServices {
     }
   }
 
-
-
   // Posting the data
   @override
   Future getPostApiResponseWithHeader(String url, dynamic data) async {
     dynamic responseJson;
+    Map<String , dynamic > queryParameter = {
+      'key' : '8356ad094c77411bbea120841231010',
+      'q' : data,
+    };
 
     dynamic jsonBody = jsonEncode(data);
     try {
-      Response response = await post(Uri.parse(url), body: jsonBody, headers: <String, String>{"Content-Type": "application/json"}
+      Response response = await post(Uri.parse(url).replace(queryParameters: queryParameter), body: jsonBody, headers: <String, String>{"Content-Type": "application/json"}
       ).timeout(Duration(seconds: 20));
       responseJson = returnResponse(response);
+
       // print('response of data in Network Class ${responseJson.toString()}');
     } on SocketException {
       throw FetchDataException('No Internet Connection');
     }
-    return responseJson;
+    return WeatherModel.fromJson(responseJson);
   }
 
-  // deleting the data by id
-
-  Future deleteDataById(String url, String id) async {
-    try {
-      final response = await http.delete(Uri.parse(url + id));
-
-      if (response.statusCode == 200) {
-        // Successful deletion
-        print('Data deleted successfully');
-      } else if (response.statusCode == 404) {
-        // Data not found
-        print('Data with ID $id not found');
-      } else {
-        // Handle other status codes as needed
-        print('Failed to delete data. Status code: ${response.statusCode}');
-      }
-    } catch (e) {
-      print(e.toString());
-    }
-  }
-
-
-  Future updateDataById(String url, String id, dynamic data)async {
-
-    try{
-
-      String jsonBody = jsonEncode(data);
-        final response = await put(Uri.parse(url+id), body: jsonBody, headers: {
-          'Content-Type': 'application/json',
-        });
-        print(jsonBody);
-
-        if (response.statusCode == 200) {
-          // Successful deletion
-          print('Data updated successfully');
-        } else if (response.statusCode == 404) {
-          // Data not found
-          print('Data with ID $id not found');
-        } else {
-          // Handle other status codes as needed
-          print('Failed to delete data. Status code: ${response.statusCode}');
-        }
-
-    }on SocketException{
-      throw FetchDataException('No Internet Connection');
-    }
-
-
-  }
 
 
   dynamic returnResponse(http.Response response) {
     switch (response.statusCode) {
+
       case 200:
+        print(response.statusCode);
         dynamic responseJson = jsonDecode(response.body);
+        print(responseJson.toString());
         return responseJson;
 
       case 201:

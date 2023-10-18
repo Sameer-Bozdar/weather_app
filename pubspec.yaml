@@ -39,13 +39,18 @@ dependencies:
   http:
   another_flushbar:
   provider:
-  shared_preferences: ^2.2.0
-  cached_network_image: ^3.2.3
-  preload_page_view: ^0.2.0
+  shared_preferences:
+  cached_network_image:
+  preload_page_view:
+  flutter_svg: ^2.0.7
+  syncfusion_flutter_charts: ^23.1.39
+  geolocator:
+  geocoding:
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -66,8 +71,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - assets/cloud.svg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
