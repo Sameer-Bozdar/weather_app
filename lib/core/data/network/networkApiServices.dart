@@ -30,17 +30,17 @@ class NetworkApiServices extends BaseApiServices {
   Future getPostApiResponseWithHeader(String url, dynamic data) async {
     dynamic responseJson;
     Map<String , dynamic > queryParameter = {
-      'key' : '8356ad094c77411bbea120841231010',
       'q' : data,
+      'key' : '8356ad094c77411bbea120841231010',
     };
-
-    dynamic jsonBody = jsonEncode(data);
+var uri = Uri.parse(url).replace(queryParameters: queryParameter);
+print(uri);
     try {
-      Response response = await post(Uri.parse(url).replace(queryParameters: queryParameter), body: jsonBody, headers: <String, String>{"Content-Type": "application/json"}
+      Response response = await post(uri, headers: <String, String>{"Content-Type": "application/json"}
       ).timeout(Duration(seconds: 20));
       responseJson = returnResponse(response);
 
-      // print('response of data in Network Class ${responseJson.toString()}');
+      print('response of data in Network Class ${responseJson.toString()}');
     } on SocketException {
       throw FetchDataException('No Internet Connection');
     }
@@ -55,9 +55,7 @@ class NetworkApiServices extends BaseApiServices {
       case 200:
         print(response.statusCode);
         dynamic responseJson = jsonDecode(response.body);
-        print(responseJson.toString());
         return responseJson;
-
       case 201:
         dynamic responseJson = jsonEncode(response.body);
         return responseJson;

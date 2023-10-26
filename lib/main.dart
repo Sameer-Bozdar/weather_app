@@ -20,7 +20,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<WeatherViewModel>(create: (_)=> WeatherViewModel()),
+
+        ChangeNotifierProvider<WeatherViewModel>(create: (_)=> WeatherViewModel(),lazy: false,),
 
     ],
       child:MaterialApp(
